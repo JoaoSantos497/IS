@@ -1,56 +1,43 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from flask import Flask, request, jsonify
 import json
 import os
 
-DATA_FILE = "data/data.json"
+app = Flask(__name__)
+data_file = "data/chat_data.json"
 
-app = FastAPI()
-
-class User(BaseModel):
-    id: int
-    name: str
-
-# Carregar dados do arquivo JSON
 def load_data():
-    if not os.path.exists(DATA_FILE):
-        return []
-    with open(DATA_FILE, "r") as file:
-        return json.load(file)
+    if os.path.exists(data_file):
+        with open(data_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"groups": {}}
 
-# Salvar dados no arquivo JSON
 def save_data(data):
-    with open(DATA_FILE, "w") as file:
-        json.dump(data, file, indent=4)
+    with open(data_file, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
 
-@app.get("/users")
-def get_users():
-    return load_data()
-
-@app.post("/users")
-def create_user(user: User):
+@app.route("/groups", methods=["POST"])
+def create_group():
     data = load_data()
-    if any(u["id"] == user.id for u in data):
-        raise HTTPException(status_code=400, detail="ID já existe")
-    data.append(user.dict())
+    group_name = request.json.get("group_name")
+    if group_name in data["groups"]:
+        return jsonify({"error": "Grupo já existe!"}), 400
+    data["groups"][group_name] = {"messages": []}
     save_data(data)
-    return user
+    return jsonify({"message": "Grupo criado com sucesso!"})
 
-@app.get("/users/{user_id}")
-def get_user(user_id: int):
+@app.route("/groups/<group_name>/messages", methods=["POST"])
+def send_message(group_name):
     data = load_data()
-    user = next((u for u in data if u["id"] == user_id), None)
-    if not user:
-        raise HTTPException(status_code=404, detail="Utilizador não encontrado")
-    return user
-
-@app.delete("/users/{user_id}")
-def delete_user(user_id: int):
-    data = load_data()
-    data = [u for u in data if u["id"] != user_id]
+    if group_name not in data["groups"]:
+        return jsonify({"error": "Grupo não encontrado!"}), 404
+    message = request.json.get("message")
+    data["groups"][group_name]["messages"].append(message)
     save_data(data)
-    return {"message": "Utilizador deletado"}
+    return jsonify({"message": "Mensagem enviada!"})
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8002)
+@app.route("/groups/<group_name>/messages", methods=["GET"])
+def get_messages(group_name):
+    data = load_data()
+    if group_name not in data["groups"]:
+        return jsonify({"error": "Grupo não encontrado!"}), 404
+    return jsonify(data["groups"][group_name]["messages"])

@@ -1,6 +1,0 @@
-FROM python:3.10
-WORKDIR /app
-COPY services/graphql_service.py .
-COPY data/data.json /app/data/data.json
-RUN pip install fastapi graphene starlette
-CMD ["uvicorn", "graphql_service:app", "--host", "0.0.0.0", "--port", "8003"]

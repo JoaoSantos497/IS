@@ -1,5 +1,0 @@
-FROM python:3.10
-WORKDIR /app
-COPY services/soap_service.py .
-RUN pip install spyne
-CMD ["python", "soap_service.py"]
