@@ -1,0 +1,6 @@
+FROM python:3.10
+WORKDIR /app
+COPY grpc_service/ /app/grpc_service/
+COPY data/data.json /app/data/data.json
+RUN pip install grpcio grpcio-tools
+CMD ["python", "grpc_service/grpc_service.py"]

@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  soap_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.soap
+    ports:
+      - "8001:8001"
+
+  rest_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.rest
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./data:/app/data
+
+  graphql_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.graphql
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./data:/app/data
+
+  grpc_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.grpc
+    ports:
+      - "8004:8004"
+    volumes:
+      - ./data:/app/data
