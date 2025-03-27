@@ -1,0 +1,10 @@
+requests
+zeep
+grpcio
+protobuf
+flask
+flask-graphql
+graphene
+Flask==2.0.3
+xmltodict==0.12.0
+
