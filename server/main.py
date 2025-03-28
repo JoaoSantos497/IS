@@ -1,7 +1,7 @@
-from rest_service import app as rest_app
-from grpc_service import serve as grpc_serve
-from soap_service import start_soap_server
-from graphql_service import start_graphql_server
+from services.rest_service import app as rest_app
+from services.grpc_service import serve as grpc_serve
+from services.soap_service import start_soap_server
+from services.graphql_service import start_graphql_server
 from threading import Thread
 
 if __name__ == "__main__":
