@@ -1,4 +1,0 @@
-Flask
-graphene
-flask-graphql
-jsonschema

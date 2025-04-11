@@ -7,12 +7,12 @@ import uuid
 from datetime import datetime
 from jsonschema import validate, ValidationError
 
-DADOS_JSON = '/dados/tarefas.json'
-SCHEMA_PATH = './schema/tarefa.schema.json'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SCHEMA_PATH = os.path.join(BASE_DIR, 'schema', 'tarefa.schema.json')
 
 # Carregar JSON Schema
 with open(SCHEMA_PATH) as f:
-    tarefa_schema = json.load(f)
+    schema = json.load(f)
 
 def carregar_tarefas():
     if os.path.exists(DADOS_JSON):
