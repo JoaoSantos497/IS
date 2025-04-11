@@ -1,10 +1,10 @@
-import requests
+import requests # type: ignore
 import json
-import zeep
-from graphqlclient import GraphQLClient
-import grpc
-import tarefa_pb2
-import tarefa_pb2_grpc
+import zeep# type: ignore
+from graphqlclient import GraphQLClient# type: ignore
+import grpc# type: ignore
+import tarefa_pb2# type: ignore
+import tarefa_pb2_grpc# type: ignore
 import xmltodict
 
 # Função para interagir com o serviço REST
