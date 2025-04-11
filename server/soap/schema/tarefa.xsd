@@ -1,0 +1,20 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="tarefas">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="tarefa" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" type="xs:string"/>
+              <xs:element name="titulo" type="xs:string"/>
+              <xs:element name="descricao" type="xs:string"/>
+              <xs:element name="estado" type="xs:string"/>
+              <xs:element name="data_criacao" type="xs:string"/>
+              <xs:element name="data_limite" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

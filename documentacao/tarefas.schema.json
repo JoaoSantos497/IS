@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "titulo": {
+        "type": "string"
+      },
+      "descricao": {
+        "type": "string"
+      },
+      "estado": {
+        "type": "string",
+        "enum": ["pendente", "em andamento", "concluída"]
+      },
+      "data_criacao": {
+        "type": "string",
+        "format": "date"
+      },
+      "data_limite": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "required": ["titulo", "descricao", "estado", "data_criacao", "data_limite"],
+    "additionalProperties": false
+  }
+  

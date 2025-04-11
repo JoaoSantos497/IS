@@ -1,0 +1,4 @@
+requests
+zeep
+graphqlclient
+grpcio

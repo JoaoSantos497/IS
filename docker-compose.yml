@@ -1,24 +1,44 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  servidor:
-    build:
-      context: ./servidor
+  rest:
+    build: ./servidor/rest
     ports:
       - "5000:5000"
     volumes:
-      - ./servidor/data:/app/data
-    networks:
-      - chat-network
+      - ./servidor/dados:/dados
+
+  soap:
+    build: ./servidor/soap
+    volumes:
+      - dados_tarefas:/dados
+    ports:
+      - "8000:8000"
+
+
+  graphql:
+    build: ./servidor/graphql
+    volumes:
+      - dados_tarefas:/dados
+    ports:
+      - "4000:4000"
+
+  grpc:
+    build: ./servidor/grpc
+    volumes:
+      - dados_tarefas:/dados
+    ports:
+      - "50051:50051"
 
   cliente:
-    build:
-      context: ./cliente
+    build: ./cliente
     depends_on:
-      - servidor
-    networks:
-      - chat-network
+      - rest
+      - soap
+      - graphql
+      - grpc
+    stdin_open: true
+    tty: true
 
-networks:
-  chat-network:
-    driver: bridge
+volumes:
+  dados:
