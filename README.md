@@ -99,3 +99,8 @@ pip install -r cliente/requirements.txt
 python cliente/cliente.py
 
 O cliente irá interagir com os diferentes serviços do servidor e demonstrar a importação e exportação de dados JSON e XML.
+
+
+Considerações Finais
+
+Este projeto tem como objetivo demonstrar o uso de múltiplas tecnologias de serviços web e a integração de diferentes padrões de comunicação (REST, SOAP, GraphQL, e gRPC) para a implementação de um sistema de gestão de tarefas.
