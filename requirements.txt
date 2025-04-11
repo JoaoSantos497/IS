@@ -1,5 +1,5 @@
 Flask
-flask-graphql-2.0.1
+flask-graphql==2.0.1
 graphene
 jsonschema
 grpcio
@@ -10,4 +10,3 @@ lxml
 requests
 zeep
 graphqlclient
-
