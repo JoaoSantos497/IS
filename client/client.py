@@ -1,7 +1,7 @@
+from graphqlclient import GraphQLClient
 import requests
 import zeep
 import xmltodict
-import GraphQLClient
 import grpc
 import tarefa_pb2
 import tarefa_pb2_grpc
