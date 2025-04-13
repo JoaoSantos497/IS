@@ -8,16 +8,20 @@ from jsonschema import validate, ValidationError
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_PATH = os.path.join(BASE_DIR, 'schema', 'tarefa.schema.json')
-DADOS_JSON = os.path.join(BASE_DIR, 'dados.json')  # Adicione isso se quiser persistência
+DADOS_JSON = os.path.join(BASE_DIR, 'tarefas.json')  # Adicione isso se quiser persistência
 
 # Carregar JSON Schema
 with open(SCHEMA_PATH) as f:
+    print("DEBUG: schema carregado:")
     tarefa_schema = json.load(f)
+    print(tarefa_schema)
 
 def carregar_tarefas():
     if os.path.exists(DADOS_JSON):
+        print("DEBUG: tarefas carregadas:")
         with open(DADOS_JSON) as f:
             return json.load(f)
+    print("DEBUG: tarefas carregadas:")
     return []
 
 def guardar_tarefas(tarefas):
@@ -30,8 +34,9 @@ class Tarefa(graphene.ObjectType):
     titulo = graphene.String()
     descricao = graphene.String()
     estado = graphene.String()
-    data_criacao = graphene.String()
-    data_limite = graphene.String()
+    data_criacao = graphene.String(name="data_criacao")
+    data_limite = graphene.String(name="data_limite")
+
 
 class Query(graphene.ObjectType):
     tarefas = graphene.List(Tarefa)

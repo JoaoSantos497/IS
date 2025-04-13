@@ -1,2 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <tarefas>
+	<tarefa>
+		<id>1</id>
+		<titulo>Tarefa de Teste</titulo>
+		<descricao>DescriÃ§Ã£o da tarefa</descricao>
+		<estado>pendente</estado>
+		<data_criacao>2025-04-13</data_criacao>
+		<data_limite>2025-04-20</data_limite>
+	</tarefa>
+	<tarefa>
+		<id>ab60065a-efa1-42ed-bc9a-3e30be1d414f</id>
+		<titulo>Fazer relatório</titulo>
+		<descricao>Preparar relatório final do projeto</descricao>
+		<estado>pendente</estado>
+		<data_criacao>2025-04-13</data_criacao>
+		<data_limite>2025-04-20</data_limite>
+	</tarefa>
 </tarefas>

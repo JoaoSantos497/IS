@@ -6,9 +6,9 @@ import os
 import json
 import tarefa_pb2
 import tarefa_pb2_grpc
-from google.protobuf.empty_pb2 import Empty
 
-DADOS_JSON = '/dados/tarefas.json'
+
+DADOS_JSON = '../dados/tarefas.json'
 
 # Carregar e guardar tarefas
 def carregar_tarefas():

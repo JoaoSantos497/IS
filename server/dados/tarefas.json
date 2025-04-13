@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "data_criacao": "2025-04-13",
+        "data_limite": "2025-05-02",
+        "descricao": "limpar pratos",
+        "estado": "pendente",
+        "id": "dd4f3517-cc5b-486f-8c66-e4c390d11dea",
+        "titulo": "limpeza"
+    }
+]

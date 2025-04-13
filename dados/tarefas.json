@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "titulo": "limpeza",
+    "descricao": "limpar pratos",
+    "estado": "pendente",
+    "data_limite": "2025-05-02",
+    "id": "dd4f3517-cc5b-486f-8c66-e4c390d11dea",
+    "data_criacao": "2025-04-13"
+  },
+  {
+    "id": "7a92ab75-83b9-4cee-9d60-81107d2f2512",
+    "titulo": "Estudar gRPC",
+    "descricao": "Ler documenta\u00e7\u00e3o e fazer testes",
+    "estado": "pendente",
+    "data_criacao": "2025-04-13",
+    "data_limite": "2025-04-30"
+  }
+]

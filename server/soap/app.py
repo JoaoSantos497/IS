@@ -6,13 +6,15 @@ import os
 import uuid
 import xmltodict
 
-DADOS_XML = '/dados/tarefas.xml'
+DADOS_XML = './dados/tarefas.xml'
 XSD_PATH = './schema/tarefa.xsd'
 
 def carregar_tarefas():
     if not os.path.exists(DADOS_XML):
+        print("DEBUG: Nao existe:")
         return []
     with open(DADOS_XML) as f:
+        print("DEBUG: Existe:")
         obj = xmltodict.parse(f.read())
         tarefas = obj.get('tarefas', {}).get('tarefa', [])
         if isinstance(tarefas, dict):
@@ -34,7 +36,9 @@ class TarefaService(ServiceBase):
 
     @rpc(_returns=Iterable(Unicode))
     def listar_tarefas(ctx):
+        print("DEBUG: tarefas carregadas:")
         tarefas = carregar_tarefas()
+        print(tarefas)
         for t in tarefas:
             yield str(t)
 

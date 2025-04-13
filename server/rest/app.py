@@ -7,8 +7,8 @@ import xmltodict
 from datetime import datetime
 
 app = Flask(__name__)
-DADOS_JSON = '/dados/tarefas.json'
-DADOS_XML = '/dados/tarefas.xml'
+DADOS_JSON = '../dados/tarefas.json'
+DADOS_XML = '../dados/tarefas.xml'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_PATH = os.path.join(BASE_DIR, 'schema', 'tarefa.schema.json')
 
