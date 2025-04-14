@@ -1,20 +1,20 @@
+import sys
 from graphqlclient import GraphQLClient
 import requests
 import zeep
-import xmltodict
 import grpc
-import tarefa_pb2
-import tarefa_pb2_grpc
-
+sys.path.append('../server/grpc')
+import tarefa_pb2 # type: ignore
+import tarefa_pb2_grpc # type: ignore
 
 # Função para interagir com o serviço REST
 def client_rest():
-    print("Interagindo com o serviço REST...")
-    
+    print("\n[REST] Interagindo com o serviço REST...")
+
     # GET - Listar tarefas
     response = requests.get('http://localhost:5000/tarefas')
     tarefas = response.json()
-    print("Tarefas (REST):", tarefas)
+    print("Tarefas:", tarefas)
 
     # POST - Criar tarefa
     nova_tarefa = {
@@ -24,20 +24,19 @@ def client_rest():
         "data_limite": "2025-04-30"
     }
     response = requests.post('http://localhost:5000/tarefas', json=nova_tarefa)
-    print("Tarefa Criada (REST):", response.json())
+    print("Tarefa Criada:", response.json())
 
 # Função para interagir com o serviço SOAP
 def client_soap():
-    print("Interagindo com o serviço SOAP...")
-    
-    # Criar cliente SOAP
-    client = zeep.Client('http://localhost:5002/soap?wsdl')
-    
-    # Listar tarefas (exemplo)
-    tarefas = client.service.ListarTarefas()
-    print("Tarefas (SOAP):", tarefas)
+    print("\n[SOAP] Interagindo com o serviço SOAP...")
 
-    # Criar tarefa (exemplo)
+    client = zeep.Client('http://localhost:5002/soap?wsdl')
+
+    # Listar tarefas
+    tarefas = client.service.ListarTarefas()
+    print("Tarefas:", tarefas)
+
+    # Criar tarefa
     nova_tarefa = {
         "titulo": "Nova Tarefa SOAP",
         "descricao": "Descrição da tarefa",
@@ -45,23 +44,23 @@ def client_soap():
         "data_limite": "2025-04-30"
     }
     tarefa = client.service.CriarTarefa(**nova_tarefa)
-    print("Tarefa Criada (SOAP):", tarefa)
+    print("Tarefa Criada:", tarefa)
 
 # Função para interagir com o serviço GraphQL
 def client_graphql():
-    print("Interagindo com o serviço GraphQL...")
-    
+    print("\n[GraphQL] Interagindo com o serviço GraphQL...")
+
     client = GraphQLClient('http://localhost:5003/graphql')
 
     # Query para listar tarefas
     query = '{ listarTarefas { id titulo descricao estado dataCriacao dataLimite } }'
     response = client.execute(query)
-    print("Tarefas (GraphQL):", response)
+    print("Tarefas:", response)
 
     # Mutation para criar tarefa
     mutation = '''
     mutation {
-        criarTarefa(titulo: "Nova Tarefa GraphQL", descricao: "Descrição", estado: "pendente", dataLimite: "2025-04-30") {
+        criarTarefa(titulo: \"Nova Tarefa GraphQL\", descricao: \"Descrição\", estado: \"pendente\", dataLimite: \"2025-04-30\") {
             id
             titulo
             descricao
@@ -69,53 +68,54 @@ def client_graphql():
     }
     '''
     response = client.execute(mutation)
-    print("Tarefa Criada (GraphQL):", response)
+    print("Tarefa Criada:", response)
 
 # Função para interagir com o serviço gRPC
 def client_grpc():
-    print("Interagindo com o serviço gRPC...")
-    
+    print("\n[gRPC] Interagindo com o serviço gRPC...")
+
     channel = grpc.insecure_channel('localhost:50051')
     stub = tarefa_pb2_grpc.TarefaServiceStub(channel)
 
     # Listar tarefas
     response = stub.ListarTarefas(tarefa_pb2.Empty())
-    print("Tarefas (gRPC):")
+    print("Tarefas:")
     for tarefa in response.tarefas:
-        print(f"{tarefa.titulo}")
+        print(f"- {tarefa.titulo} ({tarefa.estado})")
 
     # Criar tarefa
     nova_tarefa = stub.CriarTarefa(tarefa_pb2.Tarefa(
-        titulo="Nova Tarefa gRPC", 
-        descricao="Descrição da tarefa", 
-        estado="pendente", 
+        titulo="Nova Tarefa gRPC",
+        descricao="Descrição da tarefa",
+        estado="pendente",
         data_limite="2025-04-30"
     ))
-    print(f"Tarefa Criada (gRPC): {nova_tarefa.titulo}")
+    print("Tarefa Criada:", nova_tarefa.titulo)
 
 # Função para exportar/importar dados JSON
 def exportar_json():
-    print("Exportando dados JSON...")
+    print("\n[JSON] Exportando dados...")
     response = requests.get('http://localhost:5000/export/json')
-    print("Dados exportados (JSON):", response.json())
+    print("Exportado:", response.json())
 
 def importar_json():
-    print("Importando dados JSON...")
+    print("\n[JSON] Importando dados...")
     dados = [{"titulo": "Tarefa 1", "descricao": "Descrição 1", "estado": "pendente", "data_limite": "2025-04-30"}]
     response = requests.post('http://localhost:5000/import/json', json=dados)
-    print("Dados importados (JSON):", response.json())
+    print("Importado:", response.json())
 
 # Função para exportar/importar dados XML
 def exportar_xml():
-    print("Exportando dados XML...")
+    print("\n[XML] Exportando dados...")
     response = requests.get('http://localhost:5000/export/xml')
-    print("Dados exportados (XML):", response.text)
+    print("Exportado:", response.text)
 
 def importar_xml():
-    print("Importando dados XML...")
+    print("\n[XML] Importando dados...")
     xml = '''<tarefas><tarefa><titulo>Tarefa 1</titulo><descricao>Descrição 1</descricao><estado>pendente</estado><data_limite>2025-04-30</data_limite></tarefa></tarefas>'''
-    response = requests.post('http://localhost:5000/import/xml', data=xml)
-    print("Dados importados (XML):", response.json())
+    headers = {'Content-Type': 'application/xml'}
+    response = requests.post('http://localhost:5000/import/xml', data=xml, headers=headers)
+    print("Importado:", response.json())
 
 # Função principal para executar todos os clientes
 def main():
