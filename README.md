@@ -1,7 +1,7 @@
 Sistema de Gestão de Tarefas - Web Services Multitecnologia
 
 Este projeto implementa um sistema cliente-servidor utilizando múltiplas tecnologias de serviços web, incluindo REST, SOAP, GraphQL e gRPC. Ele permite a gestão de tarefas e a exportação/importação de dados nos formatos JSON e XML.
-Tecnologias Usadas
+Tecnologias Usadas:
 
     Backend: Python (Flask)
 
@@ -43,7 +43,7 @@ Detalhes da Estrutura:
 
 /documentacao: Contém os arquivos de validação (JSON Schema e XSD) e este arquivo README.md.
 
-Endpoints do Servidor
+Endpoints do Servidor:
 1. REST API
 
     GET /tarefas: Lista todas as tarefas.
@@ -92,7 +92,7 @@ Como executar o cliente Python:
 
     Instale as dependências necessárias:
 
-pip install -r cliente/requirements.txt
+pip install -r client/requirements.txt
 
     Execute o script do cliente:
 
