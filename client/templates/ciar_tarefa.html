@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h2>Criar Tarefa via {{ servico.upper() }}</h2>
+<form method="POST">
+    <label for="titulo">Título:</label>
+    <input id="titulo" name="titulo" placeholder="Título" title="Título"><br>
+
+    <label for="descricao">Descrição:</label>
+    <input id="descricao" name="descricao" placeholder="Descrição" title="Descrição"><br>
+
+    <label for="estado">Estado:</label>
+    <input id="estado" name="estado" value="pendente" title="Estado"><br>
+
+    <label for="data_limite">Data Limite:</label>
+    <input id="data_limite" name="data_limite" type="date" title="Data Limite"><br>
+
+    <button type="submit">Criar</button>
+</form>
+{% endblock %}

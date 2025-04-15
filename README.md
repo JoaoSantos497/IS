@@ -28,6 +28,7 @@ Estrutura do Projeto
     /logs
     tarefas.py
 /cliente
+    main.py
     cliente.py
 /documentacao
     tarefas.schema.json
