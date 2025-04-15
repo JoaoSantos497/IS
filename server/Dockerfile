@@ -7,4 +7,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python"]
+# Comando padrão (sobrescrito pelo docker-compose)
+CMD ["python3", "rest/app.py"]

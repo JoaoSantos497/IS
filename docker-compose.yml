@@ -3,17 +3,20 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    command: python3 rest/app.py
     ports:
       - "5000:5000"
     volumes:
       - ./server/dados:/dados
+      - ./server:/server
 
   soap:
     build:
       context: ./server
       dockerfile: Dockerfile
+    command: python3 soap/app.py
     volumes:
-      - dados_tarefas:/dados
+      - ./server/dados:/dados
     ports:
       - "8000:8000"
 
@@ -21,8 +24,10 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    command: python3 graphql/app.py
     volumes:
-      - dados_tarefas:/dados
+      - ./server/dados:/dados
+      - ./server:/server
     ports:
       - "4000:4000"
 
@@ -30,8 +35,9 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    command: python3 grpc/app.py
     volumes:
-      - dados_tarefas:/dados
+      - ./server/dados:/dados
     ports:
       - "50051:50051"
 
@@ -39,6 +45,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    command: python3 cliente/app.py
     depends_on:
       - rest
       - soap
@@ -46,6 +53,3 @@ services:
       - grpc
     stdin_open: true
     tty: true
-
-volumes:
-  dados_tarefas:
