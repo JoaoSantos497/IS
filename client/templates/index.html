@@ -1,4 +1,25 @@
-{% extends "base.html" %}
-{% block conteudo %}
-<p>Escolha um serviço no menu acima para listar ou criar tarefas.</p>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Tarefas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Gestão de Tarefas</h1>
+    <nav>
+        <a href="/">Início</a> |
+        <a href="/rest">REST</a> |
+        <a href="/soap">SOAP</a> |
+        <a href="/graphql">GraphQL</a> |
+        <a href="/grpc">gRPC</a> |
+        <a href="/exportar/json">Exportar JSON</a> |
+        <a href="/exportar/xml">Exportar XML</a> |
+        <a href="/importar/json">Importar JSON</a> |
+        <a href="/importar/xml">Importar XML</a>
+    </nav>
+    <hr>
+    {% block conteudo %}{% endblock %}
+</body>
+</html>

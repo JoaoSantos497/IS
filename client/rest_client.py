@@ -1,38 +1,41 @@
 import requests
-import json
 
-URL = 'http://127.0.0.1:5000'
+BASE_URL = "http://localhost:5000/tarefas/rest"
 
 def listar_tarefas():
     try:
-        # Realiza a requisição GET para listar as tarefas
-        response = requests.get(f'{URL}/tarefas')
-        response.raise_for_status()  # Levanta um erro para status codes 4xx/5xx
-        # Retorna as tarefas como JSON
+        response = requests.get('http://127.0.0.1:5000/tarefas')
+        response.raise_for_status()  # Verifica se a requisição foi bem-sucedida
         return response.json()
-    except requests.exceptions.HTTPError as errh:
-        print(f"Erro HTTP ao listar tarefas: {errh}")
-        return []
-    except requests.exceptions.RequestException as err:
-        print(f"Erro ao realizar a requisição para listar tarefas: {err}")
+    except requests.exceptions.HTTPError as err:
+        print(f"Erro ao listar tarefas via REST: {err}")
         return []
 
-def criar_tarefa(titulo, descricao, estado, data_limite):
-    payload = {
+def criar_tarefa(dados):
+    try:
+        response = requests.post('http://127.0.0.1:5000/tarefas', json=dados)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.HTTPError as err:
+        print(f"Erro ao criar tarefa via REST: {err}")
+        return {}
+
+def atualizar_tarefa(id, titulo, descricao, estado, data_limite):
+    tarefa = {
         "titulo": titulo,
         "descricao": descricao,
         "estado": estado,
         "data_limite": data_limite
     }
-    try:
-        # Realiza a requisição POST para criar uma nova tarefa
-        response = requests.post(f'{URL}/tarefas', json=payload)
-        response.raise_for_status()  # Levanta um erro para status codes 4xx/5xx
-        # Retorna a tarefa criada como JSON
-        return response.json()
-    except requests.exceptions.HTTPError as errh:
-        print(f"Erro HTTP ao criar tarefa: {errh}")
-        return None
-    except requests.exceptions.RequestException as err:
-        print(f"Erro ao realizar a requisição para criar tarefa: {err}")
-        return None
+    response = requests.put(f"{BASE_URL}/{id}", json=tarefa)
+    if response.status_code == 200:
+        print("Tarefa atualizada com sucesso!")
+    else:
+        print(f"Erro ao atualizar tarefa: {response.text}")
+
+def deletar_tarefa(id):
+    response = requests.delete(f"{BASE_URL}/{id}")
+    if response.status_code == 200:
+        print("Tarefa deletada com sucesso!")
+    else:
+        print(f"Erro ao deletar tarefa: {response.text}")

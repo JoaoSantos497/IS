@@ -1,29 +1,44 @@
 import zeep
+import requests
 
-# Define o cliente SOAP com o WSDL do servidor
-client = zeep.Client('http://localhost:8000/soap?wsdl')
+# URL do serviço SOAP
+URL = 'http://127.0.0.1:5000/soap?wsdl'
 
+def processar_requisicao(xml_data):
+    headers = {'Content-Type': 'application/soap+xml'}
+    response = requests.post(URL, data=xml_data, headers=headers)
+    return response.text
+
+# Função para listar tarefas
 def listar_tarefas():
     try:
-        # Chama o método ListarTarefas do serviço SOAP
-        tarefas = client.service.ListarTarefas()
-        # Processa a resposta, caso necessário
+        # Cria o cliente SOAP com o WSDL
+        client = zeep.Client(URL)
+        
+        # Aqui, altere para a operação correta de acordo com o WSDL
+        tarefas = client.service.listarTarefas()  # Substitua pelo nome da operação do WSDL
         return tarefas
     except Exception as e:
-        print(f"Erro ao listar tarefas (SOAP): {e}")
+        print(f"Erro ao listar tarefas via SOAP: {e}")
         return []
 
-def criar_tarefa(titulo, descricao, estado, data_limite):
-    try:
-        # Chama o método CriarTarefa do serviço SOAP
-        tarefa = client.service.CriarTarefa(
-            titulo=titulo,
-            descricao=descricao,
-            estado=estado,
-            data_limite=data_limite
-        )
-        # Retorna a tarefa criada ou algum identificador
-        return tarefa
-    except Exception as e:
-        print(f"Erro ao criar tarefa (SOAP): {e}")
-        return None
+# Função para criar uma nova tarefa
+def criar_tarefa(titulo, descricao, estado, data_criacao, data_limite):
+    # Criando um cliente SOAP
+    client = zeep.Client(URL)
+    
+    # Chamando o método criar_tarefa do serviço SOAP
+    resposta = client.service.criar_tarefa(titulo, descricao, estado, data_criacao, data_limite)
+    
+    print(resposta)
+
+# Exemplo de uso do cliente
+
+# Listar tarefas
+listar_tarefas()
+
+# Criar uma nova tarefa
+criar_tarefa('Nova Tarefa SOAP', 'Descrição da tarefa SOAP', 'Em andamento', '2025-04-20', '2025-05-01')
+
+# Listar tarefas novamente para confirmar que a nova tarefa foi criada
+listar_tarefas()

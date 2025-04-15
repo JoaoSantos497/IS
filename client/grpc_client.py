@@ -2,61 +2,59 @@ import grpc
 import tarefa_pb2
 import tarefa_pb2_grpc
 
+# Estabelecer uma conexão com o servidor gRPC
+def criar_channel():
+    return grpc.insecure_channel('localhost:50051')
+
+def executar_servico(dados):
+    channel = grpc.insecure_channel('localhost:50051')
+    stub = tarefa_pb2_grpc.TarefaServiceStub(channel)
+
+    # Supondo que os dados tenham os campos necessários para o serviço
+    request = tarefa_pb2.TarefaRequest(titulo=dados["titulo"], descricao=dados["descricao"])
+    response = stub.CriarTarefa(request)
+
+    return {"message": response.message}
+
+# Listar tarefas
 def listar_tarefas():
     try:
-        # Estabelece o canal com o servidor
-        channel = grpc.insecure_channel('127.0.0.1:50051')
-        stub = tarefa_pb2_grpc.TarefaServiceStub(channel)
-        
-        # Chama o método ListarTarefas e pega a resposta
-        response = stub.ListarTarefas(tarefa_pb2.Empty())
-        
-        # Converte a resposta para um formato de lista de dicionários
-        tarefas = []
-        for t in response.tarefas:
-            tarefas.append({
-                "id": t.id,
-                "titulo": t.titulo,
-                "descricao": t.descricao,
-                "estado": t.estado,
-                "data_limite": t.data_limite
-            })
-        return tarefas
+        channel = grpc.insecure_channel('localhost:50051')
+        stub = tarefa_pb2_grpc.TarefaStub(channel)
+        response = stub.ListarTarefas(tarefa_pb2.ListarTarefasRequest())
+        return response.tarefas
     except grpc.RpcError as e:
-        print(f"Erro gRPC ao listar tarefas: {e}")
-        return []
-    except Exception as e:
-        print(f"Erro inesperado ao listar tarefas: {e}")
+        print(f"Erro ao listar tarefas via gRPC: {e}")
         return []
 
-def criar_tarefa(titulo, descricao, estado, data_limite):
+# Criar uma nova tarefa
+def criar_tarefa(stub, titulo, descricao, estado, data_limite):
     try:
-        # Estabelece o canal com o servidor
-        channel = grpc.insecure_channel('127.0.0.1:50051')
-        stub = tarefa_pb2_grpc.TarefaServiceStub(channel)
-        
-        # Cria a tarefa com os parâmetros fornecidos
-        tarefa = tarefa_pb2.Tarefa(
+        request = tarefa_pb2.CriarTarefaRequest(
             titulo=titulo,
             descricao=descricao,
             estado=estado,
             data_limite=data_limite
         )
-        
-        # Chama o método CriarTarefa e recebe a resposta
-        response = stub.CriarTarefa(tarefa)
-        
-        # Retorna os dados da tarefa criada
-        return {
-            "id": response.id,
-            "titulo": response.titulo,
-            "descricao": response.descricao,
-            "estado": response.estado,
-            "data_limite": response.data_limite
-        }
+        response = stub.CriarTarefa(request)
+        print(f"Tarefa criada com sucesso! ID: {response.id}")
     except grpc.RpcError as e:
-        print(f"Erro gRPC ao criar tarefa: {e}")
-        return None
-    except Exception as e:
-        print(f"Erro inesperado ao criar tarefa: {e}")
-        return None
+        print(f"Erro ao criar tarefa: {e}")
+
+# Cliente principal
+def main():
+    # Estabelecer o canal de comunicação com o servidor
+    channel = criar_channel()
+    stub = tarefa_pb2_grpc.TarefaServiceStub(channel)
+
+    # Exemplo: Listar tarefas
+    listar_tarefas(stub)
+
+    # Exemplo: Criar uma nova tarefa
+    criar_tarefa(stub, "Nova Tarefa", "Descrição da nova tarefa", "Em andamento", "2025-05-01")
+
+    # Listar novamente para verificar a criação
+    listar_tarefas(stub)
+
+if __name__ == '__main__':
+    main()

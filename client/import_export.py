@@ -1,16 +1,15 @@
-import requests
+import json
 
-def exportar(formato):
-    if formato == 'json':
-        return requests.get('http://127.0.0.1:5000/export/json').json()
-    elif formato == 'xml':
-        return requests.get('http://127.0.0.1:5000/export/xml').text
+def exportar_json():
+    # Lógica para pegar as tarefas e exportar para JSON
+    tarefas = []  # Substitua por suas tarefas reais
+    return json.dumps(tarefas, indent=4)
 
-def importar_json():
-    dados = [{"titulo": "Importada", "descricao": "Via JSON", "estado": "pendente", "data_limite": "2025-04-30"}]
-    return requests.post('http://127.0.0.1:5000/import/json', json=dados).json()
-
-def importar_xml():
-    xml = '''<tarefas><tarefa><titulo>Importada</titulo><descricao>Via XML</descricao><estado>pendente</estado><data_limite>2025-04-30</data_limite></tarefa></tarefas>'''
-    headers = {'Content-Type': 'application/xml'}
-    return requests.post('http://127.0.0.1:5000/import/xml', data=xml, headers=headers).json()
+def exportar_xml():
+    # Lógica para pegar as tarefas e exportar para XML
+    tarefas = []  # Substitua por suas tarefas reais
+    xml_data = "<tarefas>"  # Início do XML
+    for tarefa in tarefas:
+        xml_data += f"<tarefa><titulo>{tarefa['titulo']}</titulo></tarefa>"
+    xml_data += "</tarefas>"
+    return xml_data
