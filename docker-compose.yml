@@ -1,37 +1,44 @@
-version: '3.9'
-
 services:
   rest:
-    build: ./servidor/rest
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     volumes:
-      - ./servidor/dados:/dados
+      - ./server/dados:/dados
 
   soap:
-    build: ./servidor/soap
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     volumes:
       - dados_tarefas:/dados
     ports:
       - "8000:8000"
 
-
   graphql:
-    build: ./servidor/graphql
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     volumes:
       - dados_tarefas:/dados
     ports:
       - "4000:4000"
 
   grpc:
-    build: ./servidor/grpc
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     volumes:
       - dados_tarefas:/dados
     ports:
       - "50051:50051"
 
   cliente:
-    build: ./cliente
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     depends_on:
       - rest
       - soap
@@ -41,4 +48,4 @@ services:
     tty: true
 
 volumes:
-  dados:
+  dados_tarefas:
