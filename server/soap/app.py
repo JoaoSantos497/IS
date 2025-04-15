@@ -66,5 +66,5 @@ wsgi_app = WsgiApplication(app)
 
 if __name__ == '__main__':
     from wsgiref.simple_server import make_server
-    print("SOAP service a correr em http://192.168.246.23:8000")
-    make_server('192.168.246.23', 8000, wsgi_app).serve_forever()
+    print("SOAP service a correr em http://0.0.0.0:8000")
+    make_server('0.0.0.0', 8000, wsgi_app).serve_forever()
