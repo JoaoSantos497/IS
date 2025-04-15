@@ -1,7 +1,7 @@
 import zeep
 
 # Define o cliente SOAP com o WSDL do servidor
-client = zeep.Client('http://localhost:5000/soap?wsdl')
+client = zeep.Client('http://localhost:8000/soap?wsdl')
 
 def listar_tarefas():
     try:
