@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  rest:
+    build: ./server/rest
+    ports:
+      - "8001:8001"
+
+  grpc:
+    build: ./server/grpc
+    ports:
+      - "5001:5001"
+
+  soap:
+    build: ./server/soap
+    ports:
+      - "8002:8002"
+
+  graphql:
+    build: ./server/graphql
+    ports:
+      - "8003:8003"
+
+  cliente:
+    build: ./client
+    ports:
+      - "80:80"
+

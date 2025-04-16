@@ -3,7 +3,7 @@ import tarefa_pb2
 import tarefa_pb2_grpc
 
 def criar_channel():
-    return grpc.insecure_channel('localhost:50051')
+    return grpc.insecure_channel('localhost:5001')
 
 def listar_tarefas():
     try:

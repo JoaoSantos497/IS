@@ -77,8 +77,8 @@ class TarefaService(tarefa_pb2_grpc.TarefaServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     tarefa_pb2_grpc.add_TarefaServiceServicer_to_server(TarefaService(), server)
-    server.add_insecure_port('[::]:50051')
-    print("gRPC Server running on port 50051")
+    server.add_insecure_port('[::]:5001')
+    print("gRPC Server running on port 5001")
     server.start()
     server.wait_for_termination()
 

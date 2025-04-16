@@ -1,7 +1,7 @@
 import zeep
 import requests
 
-URL = "http://127.0.0.1:8000/soap?wsdl"
+URL = "http://localhost:8002/soap?wsdl"
 client = zeep.Client(URL)
 
 def listar_tarefas():

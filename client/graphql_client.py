@@ -1,7 +1,7 @@
 import requests
 import json
 
-URL = "http://127.0.0.1:4000/graphql"
+URL = "http://localhost:8003/graphql"
 
 def executar_query(query, variables=None):
     payload = {"query": query}

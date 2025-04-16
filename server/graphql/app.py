@@ -81,4 +81,4 @@ def graphql_server():
     return jsonify(result.data)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4000)
+    app.run(host='0.0.0.0', port=8003)

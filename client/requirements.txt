@@ -1,0 +1,13 @@
+Flask
+flask-graphql==2.0.1
+graphene
+jsonschema
+grpcio
+grpcio-tools
+xmltodict
+spyne
+lxml
+requests
+zeep
+graphqlclient
+gql

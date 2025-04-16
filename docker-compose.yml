@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   rest:
     build:
@@ -5,47 +7,45 @@ services:
       dockerfile: Dockerfile
     command: python3 rest/app.py
     ports:
-      - "5000:5000"
+      - "8001:8001"
     volumes:
-      - ./server/dados:/dados
-      - ./server:/server
+      - ./server/dados:/app/dados
 
   soap:
     build:
       context: ./server
       dockerfile: Dockerfile
     command: python3 soap/app.py
-    volumes:
-      - ./server/dados:/dados
     ports:
-      - "8000:8000"
+      - "8002:8002"
+    volumes:
+      - ./server/dados:/app/dados
 
   graphql:
     build:
       context: ./server
       dockerfile: Dockerfile
     command: python3 graphql/app.py
-    volumes:
-      - ./server/dados:/dados
-      - ./server:/server
     ports:
-      - "4000:4000"
+      - "8003:8003"
+    volumes:
+      - ./server/dados:/app/dados
 
   grpc:
     build:
       context: ./server
       dockerfile: Dockerfile
     command: python3 grpc/app.py
-    volumes:
-      - ./server/dados:/dados
     ports:
-      - "50051:50051"
+      - "5001:5001"
+    volumes:
+      - ./server/dados:/app/dados
 
   cliente:
     build:
-      context: ./server
-      dockerfile: Dockerfile
-    command: python3 cliente/app.py
+      context: ./cliente
+      dockerfile: ../server/Dockerfile  # Usa o mesmo Dockerfile que os outros
+    command: python3 app.py
     depends_on:
       - rest
       - soap
@@ -53,3 +53,4 @@ services:
       - grpc
     stdin_open: true
     tty: true
+
