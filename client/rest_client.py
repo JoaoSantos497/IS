@@ -1,19 +1,34 @@
 import requests
 
-BASE_URL = "http://localhost:5000/tarefas/rest"
+BASE_URL = "http://127.0.0.1:5000/tarefas/rest"
+
 
 def listar_tarefas():
     try:
-        response = requests.get('http://127.0.0.1:5000/tarefas')
-        response.raise_for_status()  # Verifica se a requisição foi bem-sucedida
+        response = requests.get(BASE_URL)
+        response.raise_for_status()
+        
+        # Mostra o conteúdo bruto (útil para debug)
+        print("Resposta bruta do servidor REST:", response.text)
+
+        # Tenta converter para JSON
         return response.json()
     except requests.exceptions.HTTPError as err:
-        print(f"Erro ao listar tarefas via REST: {err}")
-        return []
+        print(f"Erro HTTP ao listar tarefas via REST: {err}")
+    except ValueError as e:
+        print(f"Erro ao decodificar JSON da resposta: {e}")
+        print("Conteúdo retornado:", response.text)
+    return []
 
-def criar_tarefa(dados):
+def criar_tarefa(titulo, descricao, estado, data_limite):
+    tarefa = {
+        "titulo": titulo,
+        "descricao": descricao,
+        "estado": estado,
+        "data_limite": data_limite
+    }
     try:
-        response = requests.post('http://127.0.0.1:5000/tarefas', json=dados)
+        response = requests.post(BASE_URL, json=tarefa)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.HTTPError as err:

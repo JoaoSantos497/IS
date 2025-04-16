@@ -48,6 +48,15 @@ def listar_tarefas(servico):
         print(f"Erro ao listar tarefas via {servico}: {e}")
     return render_template('listar_tarefas.html', tarefas=tarefas, servico=servico)
 
+# API para listar tarefas em JSON
+@app.route('/tarefas/rest', methods=['GET'])
+def listar_tarefas_rest_json():
+    try:
+        tarefas = rest_client.listar_tarefas()
+        return jsonify(tarefas)
+    except Exception as e:
+        return jsonify({"error": f"Erro ao listar tarefas: {e}"}), 500
+
 # API REST para criar uma nova tarefa
 @app.route('/tarefas/rest', methods=['POST'])
 def criar_tarefa_rest():

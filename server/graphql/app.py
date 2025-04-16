@@ -1,48 +1,36 @@
-from flask import Flask, request, jsonify
 import graphene
-import json
-import os
+from flask import Flask, request, jsonify
 import uuid
 from datetime import datetime
 from jsonschema import validate, ValidationError
+import json
+import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SCHEMA_PATH = os.path.join(BASE_DIR, 'schema', 'tarefa.schema.json')
-DADOS_JSON = os.path.join(BASE_DIR, 'tarefas.json')  # Adicione isso se quiser persistência
+SCHEMA_PATH = os.path.join(BASE_DIR, 'schema', 'tarefa.schema.json')  # Atualize o caminho conforme necessário
+DADOS_JSON = os.path.join(BASE_DIR, 'tarefas.json')  # Persistência no arquivo JSON
 
 # Carregar JSON Schema
 with open(SCHEMA_PATH) as f:
-    print("DEBUG: schema carregado:")
     tarefa_schema = json.load(f)
-    print(tarefa_schema)
 
 def carregar_tarefas():
     if os.path.exists(DADOS_JSON):
-        print("DEBUG: tarefas carregadas:")
         with open(DADOS_JSON) as f:
             return json.load(f)
-    print("DEBUG: tarefas carregadas:")
     return []
 
 def guardar_tarefas(tarefas):
     with open(DADOS_JSON, 'w') as f:
         json.dump(tarefas, f, indent=2)
 
-# GraphQL Types
 class Tarefa(graphene.ObjectType):
     id = graphene.String()
     titulo = graphene.String()
     descricao = graphene.String()
     estado = graphene.String()
-    data_criacao = graphene.String(name="data_criacao")
-    data_limite = graphene.String(name="data_limite")
-
-
-class Query(graphene.ObjectType):
-    tarefas = graphene.List(Tarefa)
-
-    def resolve_tarefas(self, info):
-        return carregar_tarefas()
+    data_criacao = graphene.String()
+    data_limite = graphene.String()
 
 class CriarTarefa(graphene.Mutation):
     class Arguments:
@@ -51,10 +39,10 @@ class CriarTarefa(graphene.Mutation):
         estado = graphene.String(required=True)
         data_limite = graphene.String(required=True)
 
-    tarefa = graphene.Field(lambda: Tarefa)
+    tarefa = graphene.Field(Tarefa)
 
     def mutate(self, info, titulo, descricao, estado, data_limite):
-        nova = {
+        nova_tarefa = {
             "id": str(uuid.uuid4()),
             "titulo": titulo,
             "descricao": descricao,
@@ -62,20 +50,27 @@ class CriarTarefa(graphene.Mutation):
             "data_criacao": datetime.now().strftime("%Y-%m-%d"),
             "data_limite": data_limite
         }
+
         try:
-            validate(instance=nova, schema=tarefa_schema)
+            validate(instance=nova_tarefa, schema=tarefa_schema)
         except ValidationError as e:
-            raise Exception(f"Tarefa inválida: {e.message}")
+            return Exception(f"Tarefa inválida: {e.message}")
 
         tarefas = carregar_tarefas()
-        tarefas.append(nova)
+        tarefas.append(nova_tarefa)
         guardar_tarefas(tarefas)
-        return CriarTarefa(tarefa=nova)
+
+        return CriarTarefa(tarefa=nova_tarefa)
+
+class Query(graphene.ObjectType):
+    tarefas = graphene.List(Tarefa)
+
+    def resolve_tarefas(self, info):
+        return carregar_tarefas()
 
 class Mutation(graphene.ObjectType):
     criar_tarefa = CriarTarefa.Field()
 
-# App
 app = Flask(__name__)
 schema = graphene.Schema(query=Query, mutation=Mutation)
 

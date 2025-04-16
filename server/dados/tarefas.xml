@@ -496,4 +496,12 @@
 		<data_criacao>2025-04-20</data_criacao>
 		<data_limite>2025-05-01</data_limite>
 	</tarefa>
+	<tarefa>
+		<id>07959f5f-b6d3-4365-84ec-da2afc0d50b3</id>
+		<titulo>Nova Tarefa SOAP</titulo>
+		<descricao>Descrição da tarefa SOAP</descricao>
+		<estado>Em andamento</estado>
+		<data_criacao>2025-04-20</data_criacao>
+		<data_limite>2025-05-01</data_limite>
+	</tarefa>
 </tarefas>
