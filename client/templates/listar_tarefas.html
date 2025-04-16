@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas - {{ servico.upper() }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .voltar {
+            margin-top: 20px;
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 12px;
+            background-color: #333;
+            color: white;
+            border-radius: 4px;
+        }
+        .voltar:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Tarefas - {{ servico.upper() }}</h1>
+
+    {% if tarefas %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarefa in tarefas %}
+                <tr>
+                    <td>{{ tarefa.id }}</td>
+                    <td>{{ tarefa.titulo }}</td>
+                    <td>{{ tarefa.descricao }}</td>
+                    <td>{{ tarefa.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma tarefa encontrada para o serviço {{ servico }}.</p>
+    {% endif %}
+
+    <a href="/" class="voltar">Voltar à Página Inicial</a>
+</body>
+</html>

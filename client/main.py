@@ -46,7 +46,7 @@ def listar_tarefas(servico):
     except Exception as e:
         tarefas = []
         print(f"Erro ao listar tarefas via {servico}: {e}")
-    return render_template('listar.html', tarefas=tarefas, servico=servico)
+    return render_template('listar_tarefas.html', tarefas=tarefas, servico=servico)
 
 # API REST para criar uma nova tarefa
 @app.route('/tarefas/rest', methods=['POST'])

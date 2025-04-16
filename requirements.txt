@@ -11,5 +11,3 @@ requests
 zeep
 graphqlclient
 gql
-import_export
-grpc_client

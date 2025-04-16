@@ -22,7 +22,7 @@ def listar_tarefas():
         }
     }
     """
-    url = 'http://127.0.0.1:5000/graphql'
+    url = 'http://127.0.0.1:4000/graphql'
     headers = {"Content-Type": "application/json"}
     response = requests.post(url, json={'query': query}, headers=headers)
     
@@ -37,14 +37,12 @@ def criar_tarefa(titulo, descricao, estado, data_limite):
     mutation = """
     mutation($titulo: String!, $descricao: String!, $estado: String!, $data_limite: String!) {
         criarTarefa(titulo: $titulo, descricao: $descricao, estado: $estado, data_limite: $data_limite) {
-            tarefa {
-                id
-                titulo
-                descricao
-                estado
-                data_criacao
-                data_limite
-            }
+            id
+            titulo
+            descricao
+            estado
+            data_criacao
+            data_limite
         }
     }
     """
@@ -67,21 +65,40 @@ def criar_tarefa(titulo, descricao, estado, data_limite):
         # Verifique se a resposta é válida
         data = response.json()
 
-        # Log para depuração
-        print("Resposta completa da criação da tarefa:", data)
+        # Log para depuração: Mostrar a resposta completa
+        print("Resposta completa da criação da tarefa:", json.dumps(data, indent=4))
 
         if data and 'data' in data and 'criarTarefa' in data['data']:
-            tarefa = data['data']['criarTarefa']['tarefa']
+            tarefa = data['data']['criarTarefa']
             return tarefa
         else:
-            print(f"Erro ao processar a tarefa: Resposta recebida não contém 'data' ou 'criarTarefa'. Dados recebidos: {data}")
+            print(f"Erro ao processar a tarefa: Resposta recebida não contém 'data' ou 'criarTarefa'. Dados recebidos: {json.dumps(data, indent=4)}")
             return None
     except ValueError as e:
         print(f"Erro ao processar a resposta JSON: {e}")
         return None
 
+# Função para testar a conexão com o servidor
+def testar_servidor():
+    query = """
+    query {
+        tarefas {
+            id
+            titulo
+            descricao
+        }
+    }
+    """
+    response = requests.post(URL, json={'query': query})
+    if response.status_code == 200:
+        print("Resposta de teste:", response.json())
+    else:
+        print(f"Erro ao testar o servidor. Status Code: {response.status_code}, Response Text: {response.text}")
 
 # Exemplo de uso do cliente
+
+# Testar conexão com o servidor
+testar_servidor()
 
 # Listar tarefas
 tarefas = listar_tarefas()
@@ -93,5 +110,4 @@ if tarefas:
 # Criar uma nova tarefa
 nova_tarefa = criar_tarefa('Nova Tarefa', 'Descrição da nova tarefa', 'Em andamento', '2025-05-01')
 if nova_tarefa:
-    print("\nNova Tarefa Criada:")
-    print(f"ID: {nova_tarefa['id']}, Título: {nova_tarefa['titulo']}, Estado: {nova_tarefa['estado']}")
+    print(f"Nova tarefa criada: {nova_tarefa}")

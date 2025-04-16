@@ -2,7 +2,16 @@ import zeep
 import requests
 
 # URL do serviço SOAP
-URL = 'http://127.0.0.1:5000/soap?wsdl'
+URL = 'http://127.0.0.1:8000/soap?wsdl'
+
+# Só para debug: ver operações disponíveis
+client = zeep.Client(URL)
+print("Operações disponíveis no WSDL:")
+for service in client.wsdl.services.values():
+    for port in service.ports.values():
+        operations = port.binding._operations
+        for op in operations:
+            print(f" - {op}")
 
 def processar_requisicao(xml_data):
     headers = {'Content-Type': 'application/soap+xml'}
@@ -16,7 +25,7 @@ def listar_tarefas():
         client = zeep.Client(URL)
         
         # Aqui, altere para a operação correta de acordo com o WSDL
-        tarefas = client.service.listarTarefas()  # Substitua pelo nome da operação do WSDL
+        tarefas = client.service.listar_tarefas()  # Substitua pelo nome da operação do WSDL
         return tarefas
     except Exception as e:
         print(f"Erro ao listar tarefas via SOAP: {e}")
