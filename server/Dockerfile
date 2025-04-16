@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
@@ -7,5 +7,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Comando padrão (sobrescrito pelo docker-compose)
 CMD ["python3", "rest/app.py"]
+

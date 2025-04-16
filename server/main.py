@@ -1,22 +1,11 @@
-import multiprocessing
-import os
-import time
 import subprocess
+import os
 
-def iniciar_rest():
-    os.system("python3 rest/app.py")
-
-def iniciar_soap():
-    os.system("python3 soap/app.py")
-
-def iniciar_graphql():
-    os.system("python3 graphql/app.py")
-
-def iniciar_grpc():
-    os.system("python3 grpc/app.py")
+def iniciar_servico(nome, caminho):
+    return subprocess.Popen(["python3", caminho], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 if __name__ == "__main__":
-    print("Inicializando os serviços...")
+    print("Inicializando os serviços...\n")
 
     # Garante que a pasta de dados existe
     os.makedirs("dados", exist_ok=True)
@@ -24,16 +13,36 @@ if __name__ == "__main__":
         with open("dados/tarefas.json", "w") as f:
             f.write("[]")
 
-    # Iniciar cada serviço num processo separado
-    processos = [
-        multiprocessing.Process(target=iniciar_rest),
-        multiprocessing.Process(target=iniciar_soap),
-        multiprocessing.Process(target=iniciar_graphql),
-        multiprocessing.Process(target=iniciar_grpc),
-    ]
+    # Lista de serviços a iniciar
+    servicos = {
+        "REST": "rest/app.py",
+        "SOAP": "soap/app.py",
+        "GraphQL": "graphql/app.py",
+        "gRPC": "grpc/app.py"
+    }
 
-    for processo in processos:
-        processo.start()
+    processos = {}
 
-    for processo in processos:
-        processo.join()
+    for nome, caminho in servicos.items():
+        print(f"Iniciando {nome}...")
+        processos[nome] = iniciar_servico(nome, caminho)
+
+    print("\nTodos os serviços foram iniciados. Logs em tempo real:\n")
+
+    try:
+        # Mostrar logs dos serviços em tempo real
+        while True:
+            for nome, proc in processos.items():
+                output = proc.stdout.readline()
+                if output:
+                    print(f"[{nome}] {output.decode().strip()}")
+                if proc.poll() is not None:
+                    print(f"[{nome}] terminou com código {proc.returncode}")
+                    del processos[nome]
+                    break
+            if not processos:
+                break
+    except KeyboardInterrupt:
+        print("\nEncerrando todos os serviços...")
+        for proc in processos.values():
+            proc.terminate()
