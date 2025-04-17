@@ -18,23 +18,27 @@ def listar_tarefas():
             titulo
             descricao
             estado
-            data_limite
+            dataLimite
+            dataCriacao
         }
     }
     """
     data = executar_query(query)
-    return data.get('data', {}).get('tarefas', [])
+    tarefas = data.get('data', {}).get('tarefas', [])
+    print("Tarefas retornadas:", tarefas)
+    return tarefas
+    ##return data.get('data', {}).get('tarefas', [])
 
 def criar_tarefa(titulo, descricao, estado, data_limite):
     mutation = """
-    mutation($titulo: String!, $descricao: String!, $estado: String!, $data_limite: String!) {
-        criarTarefa(titulo: $titulo, descricao: $descricao, estado: $estado, data_limite: $data_limite) {
+    mutation($titulo: String!, $descricao: String!, $estado: String!, $dataLimite: String!) {
+        criarTarefa(titulo: $titulo, descricao: $descricao, estado: $estado, dataLimite: $dataLimite) {
             id
             titulo
             descricao
             estado
-            data_criacao
-            data_limite
+            dataCriacao
+            dataLimite
         }
     }
     """
@@ -42,7 +46,7 @@ def criar_tarefa(titulo, descricao, estado, data_limite):
         "titulo": titulo,
         "descricao": descricao,
         "estado": estado,
-        "data_limite": data_limite
+        "dataLimite": dataLimite
     }
     data = executar_query(mutation, variables)
     return data.get('data', {}).get('criarTarefa', None)
