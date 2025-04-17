@@ -1,12 +1,36 @@
 import zeep
 import requests
+import json
 
 URL = "http://localhost:8002/soap?wsdl"
 client = zeep.Client(URL)
 
 def listar_tarefas():
     try:
-        return client.service.listar_tarefas()
+        resposta = client.service.listar_tarefas()
+        print("SOAP retorno bruto:", resposta)
+
+        tarefas = []
+
+        if isinstance(resposta, list):
+            for tarefa in resposta:
+                try:
+                    # Tenta converter JSON válido
+                    tarefas.append(json.loads(tarefa))
+                except json.JSONDecodeError:
+                    # Tenta converter dicionário em string com aspas simples (formato Python)
+                    import ast
+                    tarefas.append(ast.literal_eval(tarefa))
+        elif isinstance(resposta, str):
+            # Caso único: resposta é uma string JSON representando uma lista
+            tarefas = json.loads(resposta)
+        elif isinstance(resposta, dict):
+            tarefas = [resposta]
+        else:
+            print("Formato inesperado da resposta SOAP")
+
+        return tarefas
+    
     except Exception as e:
         print(f"Erro ao listar tarefas via SOAP: {e}")
         return []
