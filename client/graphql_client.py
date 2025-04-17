@@ -29,7 +29,7 @@ def listar_tarefas():
     return tarefas
     ##return data.get('data', {}).get('tarefas', [])
 
-def criar_tarefa(titulo, descricao, estado, data_limite):
+def criar_tarefa(titulo, descricao, estado, dataLimite):
     mutation = """
     mutation($titulo: String!, $descricao: String!, $estado: String!, $dataLimite: String!) {
         criarTarefa(titulo: $titulo, descricao: $descricao, estado: $estado, dataLimite: $dataLimite) {
