@@ -26,6 +26,10 @@ class TarefaService(tarefa_pb2_grpc.TarefaServiceServicer):
     
     def ListarTarefas(self, request, context):
         tarefas = carregar_tarefas()
+        
+        # Verificar os dados antes de enviar a resposta
+        print(f"Tarefas Carregadas: {tarefas}")
+        
         return tarefa_pb2.TarefaList(tarefas=[tarefa_pb2.Tarefa(id=t['id'], 
                                                               titulo=t['titulo'],
                                                               descricao=t['descricao'],
@@ -43,6 +47,10 @@ class TarefaService(tarefa_pb2_grpc.TarefaServiceServicer):
             "data_criacao": datetime.now().strftime("%Y-%m-%d"),
             "data_limite": request.data_limite
         }
+        
+         # Debug: Verificar os dados da tarefa
+        print(f"Tarefa Criada: {nova}")
+        
         tarefas = carregar_tarefas()
         tarefas.append(nova)
         guardar_tarefas(tarefas)
