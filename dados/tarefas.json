@@ -52,48 +52,48 @@
     "titulo": "Nova Tarefa GRAPHQL",
     "descricao": "Descricao da nova tarefa GRAPHQL",
     "estado": "pendente",
-    "dataCriacao": "2025-04-17",
-    "dataLimite": "2025-05-01"
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
   },
   {
     "id": "11d42350-6c51-4888-8880-d20c4cd73846",
     "titulo": "Nova Tarefa GRAPHQL",
     "descricao": "Descricao da nova tarefa GRAPHQL",
     "estado": "pendente",
-    "dataCriacao": "2025-04-17",
-    "dataLimite": "2025-05-01"
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
   },
   {
     "id": "77b871bc-d4a6-41fc-96bd-911b2084a99c",
     "titulo": "Nova Tarefa GRAPHQL",
     "descricao": "Descricao da nova tarefa GRAPHQL",
     "estado": "pendente",
-    "dataCriacao": "2025-04-17",
-    "dataLimite": "2025-05-01"
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
   },
   {
     "id": "9b2f967f-b709-4131-bac9-4d1d8875d629",
     "titulo": "Nova Tarefa GRAPHQL",
     "descricao": "Descricao da nova tarefa GRAPHQL",
     "estado": "pendente",
-    "dataCriacao": "2025-04-17",
-    "dataLimite": "2025-05-01"
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
   },
   {
     "id": "ab779e2b-456b-4743-a07c-aed8a5f48347",
     "titulo": "Nova Tarefa GRAPHQL",
     "descricao": "Descricao da nova tarefa GRAPHQL",
     "estado": "pendente",
-    "dataCriacao": "2025-04-17",
-    "dataLimite": "2025-05-01"
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
   },
   {
     "id": "938a6d5c-88c2-4103-af1d-436d28e08de2",
     "titulo": "Nova Tarefa GRAPHQL",
     "descricao": "Descricao da nova tarefa GRAPHQL",
     "estado": "pendente",
-    "dataCriacao": "2025-04-17",
-    "dataLimite": "2025-05-01"
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
   },
   {
     "id": "304d8b56-e234-46e9-8599-b5fe14ffa0a5",
@@ -116,8 +116,8 @@
     "titulo": "Nova Tarefa GRAPHQL fdfdsf",
     "descricao": "Descricao da nova tarefa GRAPHQL fdfds",
     "estado": "pendente",
-    "dataCriacao": "2025-04-17",
-    "dataLimite": "2025-05-01"
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
   },
   {
     "id": "c3f6b432-99ff-482d-bb49-3ac3b86ee7aa",

@@ -1,8 +1,6 @@
 import zeep
-import requests
-import json
 
-URL = "http://localhost:8002/soap?wsdl"
+URL = "http://localhost:8002/?wsdl"  # Corrigido: endpoint sem /soap
 client = zeep.Client(URL)
 
 def listar_tarefas():
@@ -11,26 +9,20 @@ def listar_tarefas():
         print("SOAP retorno bruto:", resposta)
 
         tarefas = []
-
-        if isinstance(resposta, list):
-            for tarefa in resposta:
-                try:
-                    # Tenta converter JSON válido
-                    tarefas.append(json.loads(tarefa))
-                except json.JSONDecodeError:
-                    # Tenta converter dicionário em string com aspas simples (formato Python)
-                    import ast
-                    tarefas.append(ast.literal_eval(tarefa))
-        elif isinstance(resposta, str):
-            # Caso único: resposta é uma string JSON representando uma lista
-            tarefas = json.loads(resposta)
-        elif isinstance(resposta, dict):
-            tarefas = [resposta]
-        else:
-            print("Formato inesperado da resposta SOAP")
+        for tarefa in resposta:
+            # Zeep retorna objetos tipo "zeep.objects.Tarefa", que podem ser convertidos em dict assim:
+            tarefa_dict = {
+                "id": tarefa.id,
+                "titulo": tarefa.titulo,
+                "descricao": tarefa.descricao,
+                "estado": tarefa.estado,
+                "data_criacao": tarefa.data_criacao,
+                "data_limite": tarefa.data_limite
+            }
+            tarefas.append(tarefa_dict)
 
         return tarefas
-    
+
     except Exception as e:
         print(f"Erro ao listar tarefas via SOAP: {e}")
         return []
@@ -44,8 +36,9 @@ def criar_tarefa(titulo, descricao, estado, data_criacao, data_limite):
         print(f"Erro ao criar tarefa via SOAP: {e}")
         return None
 
-# Exemplo para processar XML se necessário
+# (Opcional) exemplo de envio manual de XML SOAP, se necessário
 def processar_requisicao(xml_data):
-    headers = {'Content-Type': 'application/soap+xml'}
-    response = requests.post(URL, data=xml_data, headers=headers)
+    import requests
+    headers = {'Content-Type': 'text/xml'}  # SOAP 1.1 usa 'text/xml'
+    response = requests.post("http://localhost:8002", data=xml_data, headers=headers)
     return response.text

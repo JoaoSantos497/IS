@@ -67,3 +67,14 @@ def executar_servico(dados):
         estado=dados["estado"],
         data_limite=dados["data_limite"]
     )
+
+def exportar_tarefas():
+    tarefas = listar_tarefas()
+    # Implementar a exportação das tarefas para um arquivo, banco de dados, etc.
+    # ...
+    return tarefas
+
+def importar_tarefas(tarefas):
+    # Implementar a importação das tarefas de um arquivo, banco de dados, etc.
+    # ...
+    pass

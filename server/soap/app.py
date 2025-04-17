@@ -1,46 +1,63 @@
-from spyne import Application, rpc, ServiceBase, Unicode, Iterable
+from spyne import Application, rpc, ServiceBase, Unicode, Iterable, ComplexModel
 from spyne.protocol.soap import Soap11
 from spyne.server.wsgi import WsgiApplication
 from lxml import etree
 import os
 import uuid
 import xmltodict
+import json
 
-DADOS_XML = './dados/tarefas.xml'
+# Caminhos
+DADOS_JSON = '../dados/tarefas.json'
 XSD_PATH = './schema/tarefa.xsd'
 
+# --- Funções auxiliares ---
+
 def carregar_tarefas():
-    if not os.path.exists(DADOS_XML):
-        print("DEBUG: Nao existe:")
-        return []
-    with open(DADOS_XML) as f:
-        print("DEBUG: Existe:")
-        obj = xmltodict.parse(f.read())
-        tarefas = obj.get('tarefas', {}).get('tarefa', [])
-        if isinstance(tarefas, dict):
-            return [tarefas]
-        return tarefas
+    if os.path.exists(DADOS_JSON):
+        with open(DADOS_JSON) as f:
+            return json.load(f)
+    return []
 
 def guardar_tarefas(tarefas):
-    xml = xmltodict.unparse({'tarefas': {'tarefa': tarefas}}, pretty=True)
-    with open(DADOS_XML, 'w') as f:
-        f.write(xml)
+    with open(DADOS_JSON, 'w') as f:
+        json.dump(tarefas, f, indent=2)
 
-def validar_xml(xml_str):
+def validar_com_xsd(tarefa_dict):
+    xml_temp = xmltodict.unparse({'tarefa': tarefa_dict}, pretty=True)
     xmlschema_doc = etree.parse(XSD_PATH)
     xmlschema = etree.XMLSchema(xmlschema_doc)
-    doc = etree.fromstring(xml_str.encode())
+    doc = etree.fromstring(xml_temp.encode())
     xmlschema.assertValid(doc)
 
+# --- Serviço SOAP ---
+
+class Tarefa(ComplexModel):
+    id = Unicode
+    titulo = Unicode
+    descricao = Unicode
+    estado = Unicode
+    data_criacao = Unicode
+    data_limite = Unicode
+    
 class TarefaService(ServiceBase):
 
-    @rpc(_returns=Iterable(Unicode))
+    @rpc(_returns=Iterable(Tarefa))
     def listar_tarefas(ctx):
-        print("SOAP não implementado")
-        tarefas = carregar_tarefas()
-        print(tarefas)
-        for t in tarefas:
-            yield str(t)
+        tarefas_json = carregar_tarefas()
+        tarefas = []
+        for t in tarefas_json:
+            tarefa = Tarefa(
+                id=t.get('id', ''),
+                titulo=t.get('titulo', ''),
+                descricao=t.get('descricao', ''),
+                estado=t.get('estado', ''),
+                data_criacao=t.get('data_criacao', t.get('data_criacao', '')),
+                data_limite=t.get('data_limite', t.get('data_limite', ''))
+            )
+            tarefas.append(tarefa)
+        return tarefas
+
 
     @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, _returns=Unicode)
     def criar_tarefa(ctx, titulo, descricao, estado, data_criacao, data_limite):
@@ -52,10 +69,19 @@ class TarefaService(ServiceBase):
             'data_criacao': data_criacao,
             'data_limite': data_limite
         }
+
+        try:
+            validar_com_xsd(nova)
+        except Exception as e:
+            return f"Tarefa inválida: {str(e)}"
+
         tarefas = carregar_tarefas()
         tarefas.append(nova)
         guardar_tarefas(tarefas)
+
         return "Tarefa criada com sucesso"
+
+# --- Configuração do servidor ---
 
 app = Application([TarefaService],
                   tns='soap.tarefas',

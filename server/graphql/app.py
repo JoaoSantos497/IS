@@ -25,31 +25,32 @@ def guardar_tarefas(tarefas):
         json.dump(tarefas, f, indent=2)
 
 class Tarefa(graphene.ObjectType):
+        
     id = graphene.String()
     titulo = graphene.String()
     descricao = graphene.String()
     estado = graphene.String()
-    dataCriacao = graphene.String()  # Corrigido para camelCase
-    dataLimite = graphene.String()   # Corrigido para camelCase
+    data_criacao = graphene.String()  # Corrigido para camelCase
+    data_limite = graphene.String()   # Corrigido para camelCase
 
 class CriarTarefa(graphene.Mutation):
     class Arguments:
         titulo = graphene.String(required=True)
         descricao = graphene.String(required=True)
         estado = graphene.String(required=True)
-        dataLimite = graphene.String(required=True)  # Corrigido para camelCase
-        dataCriacao = graphene.String()  # Corrigido para camelCase
+        data_limite = graphene.String(required=True)  # Corrigido para camelCase
+        data_criacao = graphene.String()  # Corrigido para camelCase
 
     tarefa = graphene.Field(Tarefa)
 
-    def mutate(self, info, titulo, descricao, estado, dataLimite, dataCriacao=None):
+    def mutate(self, info, titulo, descricao, estado, data_limite, data_criacao=None):
         nova_tarefa = {
             "id": str(uuid.uuid4()),
             "titulo": titulo,
             "descricao": descricao,
             "estado": estado,
-            "dataCriacao": datetime.now().strftime("%Y-%m-%d"),  # Corrigido para camelCase
-            "dataLimite": dataLimite  # Corrigido para camelCase
+            "data_criacao": datetime.now().strftime("%Y-%m-%d"),  # Corrigido para camelCase
+            "data_limite": data_limite  # Corrigido para camelCase
         }
 
         try:

@@ -10,8 +10,8 @@
           "type": "string",
           "enum": ["pendente", "em progresso", "concluída"]
       },
-      "dataCriacao": { "type": "string", "format": "date" },
-      "dataLimite": { "type": "string", "format": "date" }
+      "data_criacao": { "type": "string", "format": "date" },
+      "data_limite": { "type": "string", "format": "date" }
   },
-  "required": ["id", "titulo", "descricao", "estado", "dataCriacao", "dataLimite"]
+  "required": ["id", "titulo", "descricao", "estado", "data_criacao", "data_limite"]
 }

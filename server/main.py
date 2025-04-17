@@ -17,6 +17,9 @@ def iniciar_graphql():
 def iniciar_grpc():
     os.system("python3 grpc/app.py")
 
+def iniciar_client():
+    os.system("python3 ../client/main.py")
+    
 if __name__ == "__main__":
     print("Inicializando os serviços...")
 
@@ -32,6 +35,7 @@ if __name__ == "__main__":
         multiprocessing.Process(target=iniciar_soap),
         multiprocessing.Process(target=iniciar_graphql),
         multiprocessing.Process(target=iniciar_grpc),
+        multiprocessing.Process(target=iniciar_client),
     ]
 
     for processo in processos:

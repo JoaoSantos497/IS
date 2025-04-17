@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, Response
 import rest_client
 import soap_client
 import graphql_client
 import grpc_client
-import import_export
+import dicttoxml
 
 
 app = Flask(__name__)
@@ -108,41 +108,54 @@ def grpc_api():
         return jsonify(resposta), 200
     except Exception as e:
         return jsonify({"error": f"Erro ao processar requisição gRPC: {e}"}), 400
-
-# Exportar dados
-@app.route('/exportar/json')
-def exportar_json():
-    try:
-        dados = import_export.exportar_json()
-        return jsonify(dados)  # Certifique-se de que o formato esteja correto
-    except Exception as e:
-        return f"Erro ao exportar JSON: {e}"
     
-@app.route('/export/xml', methods=['GET'])
-def exportar_xml():
+@app.route('/tarefas/<servico>/export/json', methods=['GET'])
+def export_tarefas_json(servico):
+    tarefas = []
     try:
-        dados = import_export.exportar_xml()
-        return dados, 200  # Retorna XML
+        if servico == 'rest':
+            tarefas = rest_client.listar_tarefas()
+        elif servico == 'soap':
+            print("SOAP não implementado")
+            tarefas = soap_client.listar_tarefas()
+        elif servico == 'graphql':
+            tarefas = graphql_client.listar_tarefas()
+        elif servico == 'grpc':
+            tarefas = grpc_client.listar_tarefas()
     except Exception as e:
-        return jsonify({"error": f"Erro ao exportar dados em XML: {e}"}), 400
+        tarefas = []
+        print(f"Erro ao listar tarefas via {servico}: {e}")
+    print(tarefas)
+    return jsonify(tarefas)
 
-# Importar dados
-@app.route('/importar/json', methods=['POST'])
-def importar_json():
+@app.route('/tarefas/<servico>/export/xml', methods=['GET'])
+def export_tarefas_xml(servico):
+    tarefas = []
     try:
-        import_export.importar_json(request.json)  # Espera um JSON no corpo da requisição
-        return redirect('/')
+        if servico == 'rest':
+            tarefas = rest_client.listar_tarefas()
+        elif servico == 'soap':
+            print("SOAP não implementado")
+            tarefas = soap_client.listar_tarefas()
+        elif servico == 'graphql':
+            tarefas = graphql_client.listar_tarefas()
+        elif servico == 'grpc':
+            tarefas = grpc_client.listar_tarefas()
+        else:
+            raise ValueError(f"Serviço {servico} não suportado.")
+        
+        # Verifica se as tarefas são uma lista
+        if not isinstance(tarefas, list):
+            tarefas = []  # Se não for, torna tarefas uma lista vazia
     except Exception as e:
-        return f"Erro ao importar JSON: {e}"
-
-@app.route('/import/xml', methods=['POST'])
-def importar_xml():
-    try:
-        dados = request.data  # XML enviado no corpo da requisição
-        import_export.importar_xml(dados)
-        return jsonify({"message": "Dados XML importados com sucesso!"}), 200
-    except Exception as e:
-        return jsonify({"error": f"Erro ao importar XML: {e}"}), 400
+        tarefas = []
+        print(f"Erro ao listar tarefas via {servico}: {e}")
+    
+    # Converter lista de tarefas para XML
+    xml_data = dicttoxml.dicttoxml(tarefas, custom_root='tarefas', ids=False)
+    
+    # Retornar a resposta em XML com o tipo de conteúdo correto
+    return Response(xml_data, mimetype='application/xml')
 
 if __name__ == '__main__':
     app.run(debug=True)
