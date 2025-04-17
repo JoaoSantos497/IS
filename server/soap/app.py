@@ -36,7 +36,7 @@ class TarefaService(ServiceBase):
 
     @rpc(_returns=Iterable(Unicode))
     def listar_tarefas(ctx):
-        print("DEBUG: tarefas carregadas:")
+        print("SOAP não implementado")
         tarefas = carregar_tarefas()
         print(tarefas)
         for t in tarefas:

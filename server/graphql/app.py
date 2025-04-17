@@ -8,7 +8,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_PATH = os.path.join(BASE_DIR, 'schema', 'tarefa.schema.json')  # Atualize o caminho conforme necessário
-DADOS_JSON = os.path.join(BASE_DIR, 'tarefas.json')  # Persistência no arquivo JSON
+DADOS_JSON = '../dados/tarefas.json'
 
 # Carregar JSON Schema
 with open(SCHEMA_PATH) as f:
@@ -29,32 +29,33 @@ class Tarefa(graphene.ObjectType):
     titulo = graphene.String()
     descricao = graphene.String()
     estado = graphene.String()
-    data_criacao = graphene.String()
-    data_limite = graphene.String()
+    dataCriacao = graphene.String()  # Corrigido para camelCase
+    dataLimite = graphene.String()   # Corrigido para camelCase
 
 class CriarTarefa(graphene.Mutation):
     class Arguments:
         titulo = graphene.String(required=True)
         descricao = graphene.String(required=True)
         estado = graphene.String(required=True)
-        data_limite = graphene.String(required=True)
+        dataLimite = graphene.String(required=True)  # Corrigido para camelCase
+        dataCriacao = graphene.String()  # Corrigido para camelCase
 
     tarefa = graphene.Field(Tarefa)
 
-    def mutate(self, info, titulo, descricao, estado, data_limite):
+    def mutate(self, info, titulo, descricao, estado, dataLimite, dataCriacao=None):
         nova_tarefa = {
             "id": str(uuid.uuid4()),
             "titulo": titulo,
             "descricao": descricao,
             "estado": estado,
-            "data_criacao": datetime.now().strftime("%Y-%m-%d"),
-            "data_limite": data_limite
+            "dataCriacao": datetime.now().strftime("%Y-%m-%d"),  # Corrigido para camelCase
+            "dataLimite": dataLimite  # Corrigido para camelCase
         }
 
         try:
             validate(instance=nova_tarefa, schema=tarefa_schema)
         except ValidationError as e:
-            return Exception(f"Tarefa inválida: {e.message}")
+            raise Exception(f"Tarefa inválida: {e.message}")
 
         tarefas = carregar_tarefas()
         tarefas.append(nova_tarefa)
@@ -78,7 +79,14 @@ schema = graphene.Schema(query=Query, mutation=Mutation)
 def graphql_server():
     data = request.get_json()
     result = schema.execute(data.get('query'), variables=data.get('variables'))
-    return jsonify(result.data)
+    
+    response = {}
+    if result.errors:
+        response['errors'] = [str(e) for e in result.errors]
+    if result.data:
+        response['data'] = result.data
+    
+    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8003)
