@@ -1,6 +1,6 @@
 import requests
 
-BASE_URL = "http://localhost:8001/tarefas/rest"
+BASE_URL = "http://localhost:8001/tarefas"
 
 
 def listar_tarefas():
