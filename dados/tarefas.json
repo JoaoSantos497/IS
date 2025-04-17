@@ -30,5 +30,29 @@
     "data_limite": "2025-04-30",
     "id": "0313df14-c162-4386-9b6d-a6ae69c35b96",
     "data_criacao": "2025-04-14"
+  },
+  {
+    "id": "5f0f0f08-23d2-4731-8838-efd42aa19d5c",
+    "titulo": "",
+    "descricao": "",
+    "estado": "",
+    "data_criacao": "2025-04-17",
+    "data_limite": ""
+  },
+  {
+    "id": "551fec45-96e1-4e51-91fb-1f31dff2c4ad",
+    "titulo": "Teste grpc",
+    "descricao": "gfdgfds",
+    "estado": "Pendente",
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-17"
+  },
+  {
+    "id": "0b65f17e-0dc0-46fa-b893-631379829d1a",
+    "titulo": "Nova Tarefa GRAPHQL",
+    "descricao": "Descricao da nova tarefa GRAPHQL",
+    "estado": "pendente",
+    "dataCriacao": "2025-04-17",
+    "dataLimite": "2025-05-01"
   }
 ]
