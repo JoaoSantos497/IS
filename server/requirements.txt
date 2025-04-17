@@ -11,5 +11,4 @@ lxml==4.9.3
 requests==2.31.0
 zeep==4.2.1
 graphqlclient==0.2.4
-gql==3.4.1
 dicttoxml==1.7.16

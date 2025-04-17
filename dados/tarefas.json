@@ -158,5 +158,21 @@
     "estado": "Pendente",
     "data_criacao": "2025-04-17",
     "data_limite": ""
+  },
+  {
+    "id": "9dfa0f3b-2f4e-4daa-84da-29cb156a85d0",
+    "titulo": "Nova Tarefa GRAPHQL fdfdsfdsfdsf",
+    "descricao": "Descricao da nova tarefa GRAPHQL fdfds",
+    "estado": "pendente",
+    "data_criacao": "2025-04-17",
+    "data_limite": "2025-05-01"
+  },
+  {
+    "id": "2e77d21a-7258-4918-aabf-86d6e6c5e68c",
+    "titulo": "Teste grpc NOVO6",
+    "descricao": "gfdgfdfdsfdss",
+    "estado": "Pendente",
+    "data_criacao": "2025-04-17",
+    "data_limite": ""
   }
 ]
