@@ -8,8 +8,10 @@ import xmltodict
 import json
 
 # Caminhos
-DADOS_JSON = '../dados/tarefas.json'
-XSD_PATH = './schema/tarefa.xsd'
+base_dir = os.path.dirname(os.path.abspath(__file__))
+DADOS_JSON = os.path.join(base_dir, "../dados/tarefas.json")
+XSD_PATH = os.path.join(base_dir, './schema/tarefa.xsd')
+
 
 # --- Funções auxiliares ---
 
