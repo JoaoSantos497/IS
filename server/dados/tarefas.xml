@@ -32,4 +32,20 @@
 		<data_criacao>2025-04-16</data_criacao>
 		<data_limite>2025-04-30</data_limite>
 	</tarefa>
+	<tarefa>
+		<id>9443cef2-50ee-49ed-9d4d-8e972cb2b909</id>
+		<titulo>SOAP teste</titulo>
+		<descricao>Teste do soap</descricao>
+		<estado>Em andamento</estado>
+		<data_criacao>2025-04-16</data_criacao>
+		<data_limite>2025-04-30</data_limite>
+	</tarefa>
+	<tarefa>
+		<id>f74ff468-30fd-4795-a72b-0cb4e0f5ca03</id>
+		<titulo>SOAP teste dsaadsaaa</titulo>
+		<descricao>Teste do soap dsadsaad</descricao>
+		<estado>Em andamento</estado>
+		<data_criacao>2025-04-17</data_criacao>
+		<data_limite>2025-04-30</data_limite>
+	</tarefa>
 </tarefas>
