@@ -30,13 +30,25 @@ class TarefaService(tarefa_pb2_grpc.TarefaServiceServicer):
         # Verificar os dados antes de enviar a resposta
         print(f"Tarefas Carregadas: {tarefas}")
         
-        return tarefa_pb2.TarefaList(tarefas=[tarefa_pb2.Tarefa(id=t['id'], 
-                                                              titulo=t['titulo'],
-                                                              descricao=t['descricao'],
-                                                              estado=t['estado'],
-                                                              data_criacao=t['data_criacao'],
-                                                              data_limite=t['data_limite']) 
-                                             for t in tarefas])
+        tarefas_resposta = []
+
+        # Iterar sobre as tarefas e garantir que todos os campos necessários estão presentes
+        for t in tarefas:
+            # Verificar se todos os campos estão presentes
+            if 'id' in t and 'titulo' in t and 'descricao' in t and 'estado' in t and 'data_criacao' in t and 'data_limite' in t:
+                tarefa = tarefa_pb2.Tarefa(
+                    id=t['id'],
+                    titulo=t['titulo'],
+                    descricao=t['descricao'],
+                    estado=t['estado'],
+                    data_criacao=t['data_criacao'],
+                    data_limite=t['data_limite']
+                )
+                tarefas_resposta.append(tarefa)
+            else:
+                print(f"Dados incompletos para a tarefa: {t}")
+    
+        return tarefa_pb2.TarefaList(tarefas=tarefas_resposta)
 
     def CriarTarefa(self, request, context):
         nova = {
