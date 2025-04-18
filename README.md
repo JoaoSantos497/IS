@@ -33,8 +33,8 @@ Estrutura do Projeto
 /documentacao
     tarefas.schema.json
     tarefas.xsd
-    README.md
-/docker-compose.yml
+docker-compose.yml
+README.md
 
 Detalhes da Estrutura:
 
@@ -42,32 +42,32 @@ Detalhes da Estrutura:
 
 /cliente: Contém o código para o cliente Python que interage com os endpoints do servidor.
 
-/documentacao: Contém os arquivos de validação (JSON Schema e XSD) e este arquivo README.md.
+/documentacao: Contém os arquivos de validação (JSON Schema e XSD).
 
 Endpoints do Servidor:
+Métodos:
+
+GET /tarefas: Lista todas as tarefas.
+
+POST /tarefas: Cria uma nova tarefa (requisição JSON).
+    
 1. REST API
+   
+    Para interagir com o servidor SOAP, utilize o endpoint http://localhost:8001/rest.
 
-    GET /tarefas: Lista todas as tarefas.
+1. SOAP API
 
-    POST /tarefas: Cria uma nova tarefa (requisição JSON).
+    Para interagir com o servidor SOAP, utilize o endpoint http://localhost:8002/soap.
 
-    PUT /tarefas/{id}: Atualiza uma tarefa existente (requisição JSON).
+2. GraphQL API
 
-    DELETE /tarefas/{id}: Deleta uma tarefa.
+    Acesse o servidor GraphQL em http://localhost:8003/graphql para executar consultas e mutações no formato GraphQL.
 
-2. SOAP API
+3. gRPC API
 
-    Para interagir com o servidor SOAP, utilize o endpoint http://localhost:5000/soap. As requisições devem ser feitas no formato SOAP, com o uso de XML.
+    O servidor gRPC estará disponível na porta 5001, conforme configurado no server.py. Utilize o cliente gRPC para interagir com os serviços unários e de streaming.
 
-3. GraphQL API
-
-    Acesse o servidor GraphQL em http://localhost:5000/graphql para executar consultas e mutações no formato GraphQL.
-
-4. gRPC API
-
-    O servidor gRPC estará disponível na porta 50051, conforme configurado no server.py. Utilize o cliente gRPC para interagir com os serviços unários e de streaming.
-
-5. Exportação e Importação de Dados
+4. Exportação e Importação de Dados
 
     Exportar JSON: GET /export/json
 
