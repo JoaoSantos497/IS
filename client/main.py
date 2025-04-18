@@ -158,4 +158,4 @@ def export_tarefas_xml(servico):
     return Response(xml_data, mimetype='application/xml')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='192.168.243.23', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
