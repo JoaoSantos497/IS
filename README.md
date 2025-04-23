@@ -69,7 +69,7 @@ POST /tarefas: Cria uma nova tarefa (requisição JSON).
 
 4. Exportação e Importação de Dados
 
-    Exportar JSON: GET /export/json
+    Exportar JSON: GET /export/json 
 
     Importar JSON: POST /import/json (requisição JSON)
 
